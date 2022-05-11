@@ -1,0 +1,1 @@
+# treino-alfabeto-fonetico
