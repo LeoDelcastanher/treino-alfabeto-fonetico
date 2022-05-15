@@ -1,8 +1,8 @@
 <div class="current-letter-box" [ngClass]="{'answered': answered}">
   <div class="current-letter">{{currentAlfa.letter}}</div>
   <div class="next-steps">
-    <button>Again</button>
-    <button>Next</button>
+    <button (click)="tryAgain()">Again</button>
+    <button (click)="nextQuestion()">Next</button>
   </div>
 </div>
 

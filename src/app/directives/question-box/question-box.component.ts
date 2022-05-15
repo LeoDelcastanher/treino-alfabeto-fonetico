@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AlfaFon} from "../../../assets/interfaces/AlfaFon";
 import {ToolsService} from "../../services/tools.service";
 
@@ -11,7 +11,8 @@ export class QuestionBoxComponent implements OnInit {
   @Input() alfaQuestion: AlfaFon = {
     letter: '',
     answer: '',
-    wrongs: []
+    wrongs: [],
+    trimmedWrongs: ['', '', '']
   };
   @Output() answerResult = new EventEmitter<boolean>();
   questionOrder = [
@@ -26,6 +27,18 @@ export class QuestionBoxComponent implements OnInit {
 
   ngOnInit(): void {
     this.questionOrder = this.tools.shuffle(this.questionOrder);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.warn('ngOnChanged');
+    console.warn(changes);
+    this.cleanScreen();
+  }
+
+  cleanScreen() {
+    this.selectedType = '';
+    this.resultClass = '';
+    this.lock = false;
   }
 
   getQuestion(questionType: string): string {

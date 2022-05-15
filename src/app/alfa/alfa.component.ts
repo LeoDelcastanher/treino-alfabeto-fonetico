@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AlfaFon} from "../../assets/interfaces/AlfaFon";
 import {AlfaFonService} from "../services/alfa-fon.service";
+import {ToolsService} from "../services/tools.service";
 
 
 @Component({
@@ -9,7 +10,6 @@ import {AlfaFonService} from "../services/alfa-fon.service";
   styleUrls: ['./alfa.component.scss']
 })
 export class AlfaComponent implements OnInit {
-
   alfa: AlfaFon[] = [];
   currentAlfa: AlfaFon = {
     letter: '',
@@ -18,26 +18,46 @@ export class AlfaComponent implements OnInit {
   };
   answered: boolean = false;
 
-  constructor(private alfaFonService: AlfaFonService) {
+  constructor(private alfaFonService: AlfaFonService, private tools: ToolsService) {
   }
 
   ngOnInit(): void {
     this.alfaFonService.getAlfaFons().then(result => {
       this.alfa = result;
-      this.setCurrentAlfa();
+      let tempAlfa = this.alfaFonService.getRandomCurrentAlfa(this.alfa);
+      this.setCurrentAlfa(tempAlfa);
+      this.createTrimmedWrongAnswers();
       console.warn(this.currentAlfa);
     });
   }
 
-  setCurrentAlfa() {
-    this.currentAlfa.letter = this.alfa[0].letter;
-    this.currentAlfa.answer = this.alfa[0].answer;
-    this.currentAlfa.wrongs = this.alfa[0].wrongs.splice(2, 3);
+  setCurrentAlfa(alfa: AlfaFon) {
+    this.currentAlfa = alfa;
+  }
+
+  createTrimmedWrongAnswers() {
+    let shuffledWrongAnswers = this.tools.shuffle(this.currentAlfa.wrongs);
+    this.currentAlfa.trimmedWrongs = shuffledWrongAnswers.splice(0, 3);
   }
 
   answerResult(result: boolean) {
     console.warn(result);
     this.answered = true;
+  }
+
+  tryAgain() {
+    this.answered = false;
+    let olfAlfa = Object.assign({}, this.currentAlfa);
+    this.setCurrentAlfa(olfAlfa);
+    this.createTrimmedWrongAnswers();
+    this.createTrimmedWrongAnswers();
+  }
+
+  nextQuestion() {
+    this.answered = false;
+    let tempAlfa = this.alfaFonService.getRandomCurrentAlfa(this.alfa);
+    this.setCurrentAlfa(tempAlfa);
+    this.createTrimmedWrongAnswers();
   }
 
 }
