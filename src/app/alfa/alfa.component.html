@@ -1,1 +1,9 @@
-<p>alfa works!</p>
+<div class="current-letter-box" [ngClass]="{'answered': answered}">
+  <div class="current-letter">{{currentAlfa.letter}}</div>
+  <div class="next-steps">
+    <button>Again</button>
+    <button>Next</button>
+  </div>
+</div>
+
+<question-box [alfaQuestion]="currentAlfa" (answerResult)="answerResult($event)"></question-box>

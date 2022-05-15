@@ -1,0 +1,7 @@
+<button class="question-box"
+        *ngFor="let order of questionOrder"
+        [ngClass]="getSelectedClass(order)"
+        (click)="selectAnswer(order)"
+        [disabled]="lock">
+  {{ getQuestion(order) }}
+</button>

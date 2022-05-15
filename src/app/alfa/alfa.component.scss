@@ -1,0 +1,38 @@
+:host {
+  flex-grow: 2;
+  display: grid;
+  grid-template-rows: 40% auto;
+  row-gap: 1rem;
+}
+
+.current-letter-box {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+
+  .current-letter {
+    font-weight: bold;
+    font-size: 20rem;
+    line-height: 20rem;
+    transition: 0.3s ease-in-out;
+  }
+
+  .next-steps {
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+  }
+
+  &.answered {
+    .current-letter {
+      font-size: 10rem;
+      line-height: 10rem;
+    }
+
+    .next-steps {
+      visibility: visible;
+    }
+  }
+}
